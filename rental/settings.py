@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'owner',
+    'search',
 ]
 
 MIDDLEWARE = [
@@ -75,8 +77,12 @@ WSGI_APPLICATION = 'rental.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'roomforrent',
+        'USER': 'admin',
+        'PASSWORD': 'M4ster@809',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
@@ -117,4 +123,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 STATIC_URL = '/static/'
+STATICFILE_DIR=(os.path.join(BASE_DIR, 'static/'))
+MEDIA_URL = '/media/'
+# MEDIA_ROOT = '/home/ip-d/Documents/parul/projects/Max7p/max7p/media'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+LOGIN_URL='/owner/owner_register'
+LOGIN_REDIRECT_URL='/owner/owner_register'
