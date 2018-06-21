@@ -95,23 +95,30 @@ class SearchResults(TemplateView):
         # result_set = dictfetchall(cursor)
         all_results=[]
         all_property=Property.objects.raw(query)
-
+        image_url=[]
         json={}
+
         for i in all_property:
             json={}
+            images_query='SELECT id,url from search_images WHERE property_id_id=' + str(i.id)
+            images =Images.objects.raw(images_query)
             json['id']=str(i.id)
             json['name']=str(i.name)
             json['distance']=str(i.distance_KM)
-            json['image']=str(i.image)
             json['budget']=str(i.budget)
-            json['image']=str(i.image)
+            # json['image']=str(i.image)
             json['location']=str(i.location)
             json['owner']=str(i.owner.user)
             json['owner_mob']=str(i.owner.owner_mobile)
             json['furnish']=str(i.furnish_id)
+            for x in images:
+                image_url=str(x.url)
+                json['image']=image_url
+            # json['image']=list(Images.objects.filter(property_id=i.id))
 
 
             all_results.append(json)
+            print(all_results)
         # return HttpResponse(all_results)
            
             # p_id = (i.id)

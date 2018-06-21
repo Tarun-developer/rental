@@ -14,6 +14,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.utils import timezone
 import googlemaps
+from django.core.files.storage import FileSystemStorage
 gmaps = googlemaps.Client(key='AIzaSyCn4KrK85eV6WY_E9KC460feVjSukKlLsw')
 
 
@@ -110,7 +111,10 @@ class OwnerAddProperty(LoggedInMixin,TemplateView):
         context = super(OwnerAddProperty, self).get_context_data()
         return context
     def post(self, request):
-
+        myfile = request.FILES['images']
+        fs = FileSystemStorage()
+        filename = fs.save(myfile.name, myfile)
+        uploaded_file_url = fs.url(filename)
         try:
             property_type = request.POST.get('property_type')
             property_status = request.POST.get('property_status')
@@ -134,7 +138,7 @@ class OwnerAddProperty(LoggedInMixin,TemplateView):
             bachelor = request.POST.get('bachelor')
             girls = request.POST.get('girls')
             result_add_query = gmaps.places(loaction)
-            print(request.user.id)
+
             lat=result_add_query['results'][0]['geometry']['location']['lat']
             lng=result_add_query['results'][0]['geometry']['location']['lng']
             if property_status=='Furnished':
@@ -143,7 +147,9 @@ class OwnerAddProperty(LoggedInMixin,TemplateView):
                 furn_obj=Furnish.objects.create(partially=1)
             if property_status=='Unfurnished':
                 furn_obj=Furnish.objects.create(unfurnished=1)
+
             new_property=Property.objects.create(name=str(property_type) +str(" - ")+ str(property_status),created_at=timezone.now() ,location=loaction,status=1,budget=price,furnish=furn_obj,preference=pref_obj,lat=lat,lng=lng,owner_id=request.user.id)
+            images=Images.objects.create(url=uploaded_file_url,property_id=new_property)      
         except Exception as rr:
                 print (rr)
 

@@ -8,7 +8,7 @@
                
       <h1 class="page-header">Submit your property</h1>
       <div class="form-container">
-         <form action="/owner/owner_add_property" method="POST">
+         <form action="/owner/owner_add_property" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
             <input id='step2' type='checkbox'>
             <input id='step3' type='checkbox'>
@@ -152,7 +152,7 @@
                      <div class="ui-dropzone">
                         <div class="icon"></div>
                         <div>Drag and drop images or click to upload</div>
-                        <input type="file" class="form-control form-control-lg" id="gallery" multiple>
+                        <input type="file" class="form-control form-control-lg" name="images" id="gallery" multiple>
                      </div>
                   </div>
                   <div class="form-group">

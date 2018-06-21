@@ -28,10 +28,7 @@ class Preference(models.Model):
 	def __str__(self):
 		return str(self.id)
 
-class Images(models.Model):
-	name=models.CharField(max_length=500,null=True,blank=True)
-	def __str__(self):
-		return str(self.name)
+
 		
 class OwnerInfo(models.Model):
 	user = models.OneToOneField(User,on_delete=models.CASCADE)
@@ -52,7 +49,7 @@ class Property(models.Model):
 	furnish=models.ForeignKey(Furnish,on_delete=models.CASCADE,blank=True,null=True)
 	bhk=models.ForeignKey(BHK,on_delete=models.CASCADE,blank=True,null=True)
 	preference=models.ForeignKey(Preference,on_delete=models.CASCADE,blank=True,null=True)
-	image=models.ForeignKey(Images,on_delete=models.CASCADE,blank=True,null=True)
+	# image=models.ForeignKey(Images,on_delete=models.CASCADE,blank=True,null=True)
 	lat=models.FloatField(blank=True,null=True)
 	lng=models.FloatField(blank=True,null=True)
 
@@ -60,6 +57,12 @@ class Property(models.Model):
 		
 	def __str__(self):
 		return str(str(self.name)+'  '+str(self.location))
+
+class Images(models.Model):
+	url=models.CharField(max_length=500,null=True,blank=True)
+	property_id = models.OneToOneField(Property,on_delete=models.CASCADE)
+	def __str__(self):
+		return str(self.name)
 
 
 class Client(models.Model):
